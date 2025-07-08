@@ -1,36 +1,29 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  ManyToOne,
-  CreateDateColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
 import { Tenant } from '../tenant/tenant.entity';
 
-@Entity('app_user') // ✅ avoid conflict with "user" keyword
+@Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
-  @Column({ nullable: false })
-  name: string;
+  @Column()
+  name!: string;
 
-  @Column({ unique: true, nullable: false })
-  email: string;
+  @Column()
+  email!: string;
 
-  @Column({ nullable: true })
-  phone: string;
+  @Column()
+  phone!: string;
 
-  @Column({ nullable: true })
-  role: string;
+  @Column()
+  role!: string;
 
-  @ManyToOne(() => Tenant, { eager: true, onDelete: 'CASCADE' })
-  tenant: Tenant;
+  @ManyToOne(() => Tenant)
+  tenant!: Tenant;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt!: Date;
 }

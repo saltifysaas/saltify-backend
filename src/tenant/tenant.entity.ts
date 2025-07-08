@@ -9,20 +9,20 @@ import {
 @Entity()
 export class Tenant {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
-  @Column({ unique: true })
-  name: string;
+  @Column()
+  name!: string;
 
-  @Column({ unique: true })
-  email: string;
+  @Column()
+  email!: string;
 
-  @Column({ nullable: true })
-  phone: string;
+  @Column({ nullable: true }) // 👈 allow null for old rows
+  phone!: string;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt!: Date;
 }
