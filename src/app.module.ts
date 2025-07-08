@@ -1,3 +1,5 @@
+// src/app.module.ts
+
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
@@ -9,14 +11,12 @@ import { UserModule } from './user/user.module';
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'db.qgazpcbrvhtqysgnspft.supabase.co',
-      port: 5432,
-      username: 'postgres',
-      password: 'yuvrajchaubey',
-      database: 'postgres',
-      synchronize: true,
+      url: process.env.DATABASE_URL,
+      ssl: {
+        rejectUnauthorized: false,
+      },
       autoLoadEntities: true,
-      ssl: { rejectUnauthorized: false },
+      synchronize: true,
     }),
     TenantModule,
     UserModule,
