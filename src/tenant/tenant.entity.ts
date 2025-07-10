@@ -14,6 +14,9 @@ export class Tenant {
   @Column()
   name!: string;
 
+  @Column({ unique: true })
+  domain!: string;  // ✅ Added this line!
+
   @Column({ nullable: true })
   email?: string;
 
