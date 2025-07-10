@@ -12,15 +12,11 @@ export class TenantService {
 
   async create(data: Partial<Tenant>): Promise<Tenant> {
     const tenant = this.tenantRepository.create(data);
-    return await this.tenantRepository.save(tenant);
+    return this.tenantRepository.save(tenant);
   }
 
-  async findOne(id: string): Promise<Tenant> {
-    const tenant = await this.tenantRepository.findOne({ where: { id } });
-    if (!tenant) {
-      throw new Error('Tenant not found');
-    }
-    return tenant;
+  async findOne(id: string): Promise<Tenant | null> {
+    return this.tenantRepository.findOne({ where: { id } });
   }
 
   async findAll(): Promise<Tenant[]> {
