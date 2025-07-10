@@ -14,11 +14,11 @@ export class Tenant {
   @Column()
   name!: string;
 
-  @Column()
-  email!: string;
+  @Column({ nullable: true })
+  email?: string;
 
-  @Column({ nullable: true }) // 👈 allow null for old rows
-  phone!: string;
+  @Column({ nullable: true })
+  phone?: string;
 
   @CreateDateColumn()
   createdAt!: Date;

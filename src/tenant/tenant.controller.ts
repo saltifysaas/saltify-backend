@@ -1,4 +1,11 @@
-import { Controller, Post, Get, Param, Body } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Get,
+  Param,
+  Body,
+  NotFoundException,
+} from '@nestjs/common';
 import { TenantService } from './tenant.service';
 import { Tenant } from './tenant.entity';
 
@@ -17,7 +24,11 @@ export class TenantController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.tenantService.findOne(id);
+  async findOne(@Param('id') id: string) {
+    const tenant = await this.tenantService.findOne(id);
+    if (!tenant) {
+      throw new NotFoundException(`Tenant with ID ${id} not found`);
+    }
+    return tenant;
   }
 }
