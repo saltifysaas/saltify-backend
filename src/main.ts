@@ -9,7 +9,10 @@ dotenv.config({ path: join(__dirname, '..', envFile) });
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(3000, '0.0.0.0');
-  console.log(`✅ App is listening on http://localhost:3000 with ${process.env.NODE_ENV} config`);
+
+  const port = process.env.PORT || 3000;
+  await app.listen(port);
+
+  console.log(`✅ App is listening on http://localhost:${port} with ${process.env.NODE_ENV} config`);
 }
 bootstrap();
