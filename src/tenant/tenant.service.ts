@@ -2,32 +2,28 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Tenant } from './tenant.entity';
-import { CreateTenantDto } from './dto/create-tenant.dto';
 
 @Injectable()
 export class TenantService {
   constructor(
     @InjectRepository(Tenant)
-    private readonly tenantRepository: Repository<Tenant>,
+    private tenantRepository: Repository<Tenant>,
   ) {}
 
-  async create(data: CreateTenantDto) {
-    console.log('🚀 Creating tenant with data:', data);
-
+  async create(data: Partial<Tenant>): Promise<Tenant> {
     const tenant = this.tenantRepository.create(data);
-    console.log('✅ Tenant entity created:', tenant);
+    return await this.tenantRepository.save(tenant);
+  }
 
-    const saved = await this.tenantRepository.save(tenant);
-    console.log('🎉 Tenant saved:', saved);
-
-    return saved;
+  async findOne(id: string): Promise<Tenant> {
+    const tenant = await this.tenantRepository.findOne({ where: { id } });
+    if (!tenant) {
+      throw new Error('Tenant not found');
+    }
+    return tenant;
   }
 
   async findAll(): Promise<Tenant[]> {
     return this.tenantRepository.find();
-  }
-
-  async findOne(id: number): Promise<Tenant> {
-    return this.tenantRepository.findOneBy({ id });
   }
 }
