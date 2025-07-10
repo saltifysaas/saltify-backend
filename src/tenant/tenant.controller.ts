@@ -1,11 +1,4 @@
-import {
-  Controller,
-  Post,
-  Get,
-  Param,
-  Body,
-  NotFoundException,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { TenantService } from './tenant.service';
 import { Tenant } from './tenant.entity';
 
@@ -13,22 +6,25 @@ import { Tenant } from './tenant.entity';
 export class TenantController {
   constructor(private readonly tenantService: TenantService) {}
 
-  @Post()
-  create(@Body() data: Partial<Tenant>) {
-    return this.tenantService.create(data);
+  // Create one tenant (optional — keeps your single-POST working)
+  @Post('single')
+  createOne(@Body() createTenantDto: Partial<Tenant>): Promise<Tenant> {
+    return this.tenantService.create(createTenantDto);
   }
 
-  @Get()
-  findAll() {
-    return this.tenantService.findAll();
+  // ✅ Create multiple tenants
+  @Post()
+  createMany(@Body() createTenantDtos: Partial<Tenant>[]): Promise<Tenant[]> {
+    return this.tenantService.createMany(createTenantDtos);
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
-    const tenant = await this.tenantService.findOne(id);
-    if (!tenant) {
-      throw new NotFoundException(`Tenant with ID ${id} not found`);
-    }
-    return tenant;
+  findOne(@Param('id') id: string): Promise<Tenant | null> {
+    return this.tenantService.findOne(id);
+  }
+
+  @Get()
+  findAll(): Promise<Tenant[]> {
+    return this.tenantService.findAll();
   }
 }
