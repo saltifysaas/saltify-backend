@@ -4,7 +4,9 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
+import { User } from '../user/user.entity';
 
 @Entity()
 export class Tenant {
@@ -14,8 +16,8 @@ export class Tenant {
   @Column()
   name!: string;
 
-  @Column({ unique: true })
-  domain!: string;  // ✅ Added this line!
+  @Column({ nullable: false, unique: true })
+  domain!: string;
 
   @Column({ nullable: true })
   email?: string;
@@ -28,4 +30,7 @@ export class Tenant {
 
   @UpdateDateColumn()
   updatedAt!: Date;
+
+  @OneToMany(() => User, (user) => user.tenant)
+  users!: User[];
 }

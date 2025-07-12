@@ -8,7 +8,7 @@ export class UserController {
 
   @Post()
   create(@Body() data: Partial<User>) {
-    return this.userService.create(data);
+    return this.userService.createUser(data); // ✅ FIXED
   }
 
   @Get()

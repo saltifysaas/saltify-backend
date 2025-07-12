@@ -3,16 +3,23 @@ import { AppModule } from './app.module';
 import * as dotenv from 'dotenv';
 import { join } from 'path';
 
-// Load correct .env file based on NODE_ENV (default: development)
-const envFile = `.env.${process.env.NODE_ENV || 'development'}`;
+// Load correct .env file based on NODE_ENV (default: staging)
+const envFile = `.env.${process.env.NODE_ENV || 'staging'}`;
 dotenv.config({ path: join(__dirname, '..', envFile) });
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  const port = process.env.PORT || 3000;
+  // ✅ Enable CORS for your frontend
+  app.enableCors({
+    origin: 'http://localhost:3000', // Next.js frontend URL
+    credentials: true,               // For cookies/session if needed
+  });
+
+  const port = process.env.PORT || 4000;
   await app.listen(port);
 
   console.log(`✅ App is listening on http://localhost:${port} with ${process.env.NODE_ENV} config`);
 }
+
 bootstrap();

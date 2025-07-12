@@ -15,7 +15,10 @@ export class TenantService {
     return this.tenantRepository.save(tenant);
   }
 
-  // ✅ New: create multiple
+  async createTenant(data: Partial<Tenant>): Promise<Tenant> {
+    return this.create(data);
+  }
+
   async createMany(dataArray: Partial<Tenant>[]): Promise<Tenant[]> {
     const tenants = this.tenantRepository.create(dataArray);
     return this.tenantRepository.save(tenants);
@@ -27,5 +30,9 @@ export class TenantService {
 
   async findAll(): Promise<Tenant[]> {
     return this.tenantRepository.find();
+  }
+
+  async findByDomain(domain: string): Promise<Tenant | null> {
+    return this.tenantRepository.findOne({ where: { domain } });
   }
 }

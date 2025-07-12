@@ -8,5 +8,6 @@ import { TenantController } from './tenant.controller';
   imports: [TypeOrmModule.forFeature([Tenant])],
   providers: [TenantService],
   controllers: [TenantController],
+  exports: [TenantService], // 👈 This is the fix!
 })
 export class TenantModule {}

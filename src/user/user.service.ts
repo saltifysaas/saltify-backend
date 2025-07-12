@@ -10,16 +10,20 @@ export class UserService {
     private userRepo: Repository<User>,
   ) {}
 
-  create(data: Partial<User>) {
+  async createUser(data: Partial<User>) {
     const user = this.userRepo.create(data);
-    return this.userRepo.save(user);
+    return await this.userRepo.save(user);
   }
 
-  findAll() {
-    return this.userRepo.find();
+  async findAll() {
+    return await this.userRepo.find();
   }
 
-  findById(id: string) {
-    return this.userRepo.findOne({ where: { id } });
+  async findById(id: string) {
+    return await this.userRepo.findOne({ where: { id } });
+  }
+
+  async findByEmail(email: string) {
+    return await this.userRepo.findOne({ where: { email } });
   }
 }

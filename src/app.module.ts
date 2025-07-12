@@ -1,9 +1,13 @@
 import * as dotenv from 'dotenv';
 import { join } from 'path';
 
+// ✅ Load .env.<NODE_ENV> with fallback to staging
 dotenv.config({
-  path: join(__dirname, '..', `.env.${process.env.NODE_ENV || 'development'}`),
+  path: join(__dirname, '..', `.env.${process.env.NODE_ENV || 'staging'}`),
 });
+
+console.log('✅ NODE_ENV:', process.env.NODE_ENV);
+console.log('✅ ENV PATH:', join(__dirname, '..', `.env.${process.env.NODE_ENV || 'staging'}`));
 
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -11,13 +15,14 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { TenantModule } from './tenant/tenant.module';
 import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: join(__dirname, '..', `.env.${process.env.NODE_ENV || 'development'}`),
-      ignoreEnvFile: process.env.NODE_ENV === 'production', // ✅ disables .env in prod
+      envFilePath: join(__dirname, '..', `.env.${process.env.NODE_ENV || 'staging'}`),
+      ignoreEnvFile: process.env.NODE_ENV === 'staging',
     }),
 
     TypeOrmModule.forRootAsync({
@@ -36,13 +41,14 @@ import { UserModule } from './user/user.module';
             },
           },
           autoLoadEntities: true,
-          synchronize: process.env.NODE_ENV !== 'production',
+          synchronize: process.env.NODE_ENV !== 'staging',
         };
       },
     }),
 
     TenantModule,
     UserModule,
+    AuthModule,
   ],
 })
 export class AppModule {}
