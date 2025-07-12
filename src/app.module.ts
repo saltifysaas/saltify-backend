@@ -9,30 +9,32 @@ import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
+    // ✅ Load .env.<env> dynamically (e.g., .env.production)
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: join(__dirname, '..', `.env.${process.env.NODE_ENV || 'staging'}`),
     }),
 
+    // ✅ TypeORM Supabase config
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => {
-        console.log('✅ DATABASE_URL:', config.get<string>('DATABASE_URL'));
-        return {
-          type: 'postgres',
-          url: config.get<string>('DATABASE_URL'),
+      useFactory: (config: ConfigService) => ({
+        type: 'postgres',
+        url: config.get<string>('DATABASE_URL'),
+        ssl: {
+          rejectUnauthorized: false,
+        },
+        extra: {
           ssl: {
             rejectUnauthorized: false,
           },
-          extra: {
-            ssl: {
-              rejectUnauthorized: false,
-            },
-          },
-          autoLoadEntities: true,
-          synchronize: true,
-        };
-      },
+          connectionTimeoutMillis: 5000, // ✅ Helps prevent hanging
+        },
+        autoLoadEntities: true,
+        synchronize: false, // ✅ NEVER true in production
+        migrationsRun: true, // ✅ Auto-run migrations on startup
+        migrations: [join(__dirname, 'migrations', '*{.ts,.js}')],
+      }),
     }),
 
     TenantModule,

@@ -1,11 +1,4 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  OneToMany,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { User } from '../user/user.entity';
 
 @Entity()
@@ -21,6 +14,12 @@ export class Tenant {
 
   @Column({ nullable: true })
   email?: string;
+
+  @Column({ nullable: true })
+description?: string;
+
+  @Column({ nullable: true })
+notes?: string; // ✅ this is new and unique
 
   @Column({ nullable: true })
   phone?: string;
