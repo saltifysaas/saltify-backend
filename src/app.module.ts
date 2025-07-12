@@ -1,14 +1,4 @@
-import * as dotenv from 'dotenv';
 import { join } from 'path';
-
-// ✅ Load .env.<NODE_ENV> with fallback to staging
-dotenv.config({
-  path: join(__dirname, '..', `.env.${process.env.NODE_ENV || 'staging'}`),
-});
-
-console.log('✅ NODE_ENV:', process.env.NODE_ENV);
-console.log('✅ ENV PATH:', join(__dirname, '..', `.env.${process.env.NODE_ENV || 'staging'}`));
-
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -22,7 +12,6 @@ import { AuthModule } from './auth/auth.module';
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: join(__dirname, '..', `.env.${process.env.NODE_ENV || 'staging'}`),
-      ignoreEnvFile: process.env.NODE_ENV === 'staging',
     }),
 
     TypeOrmModule.forRootAsync({
@@ -41,7 +30,7 @@ import { AuthModule } from './auth/auth.module';
             },
           },
           autoLoadEntities: true,
-          synchronize: process.env.NODE_ENV !== 'staging',
+          synchronize: true,
         };
       },
     }),

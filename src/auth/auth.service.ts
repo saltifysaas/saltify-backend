@@ -20,6 +20,7 @@ export class AuthService {
     const tenant = await this.tenantService.createTenant({
       name: businessName,
       domain: domain,
+      email: email,
     });
 
     const hashedPassword = await bcrypt.hash(password, 10);
