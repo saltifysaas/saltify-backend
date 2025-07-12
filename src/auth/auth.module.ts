@@ -3,6 +3,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 
 import { AuthService } from './auth.service';
+import { AuthController } from './auth.controller'; // ✅ Make sure this import is here!
 import { UserModule } from '../user/user.module';
 import { TenantModule } from '../tenant/tenant.module';
 
@@ -12,11 +13,12 @@ import { TenantModule } from '../tenant/tenant.module';
     TenantModule,
     PassportModule,
     JwtModule.register({
-      secret: process.env.JWT_SECRET || 'default_secret', // Adjust as needed
+      secret: process.env.JWT_SECRET || 'default_secret',
       signOptions: { expiresIn: '1h' },
     }),
   ],
+  controllers: [AuthController], // ✅ This wires up your routes
   providers: [AuthService],
-  exports: [AuthService], // Optional, if used elsewhere
+  exports: [AuthService],
 })
 export class AuthModule {}
