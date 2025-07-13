@@ -5,7 +5,7 @@ import * as bcrypt from 'bcrypt';
 import { UserService } from '../user/user.service';
 import { TenantService } from '../tenant/tenant.service';
 
-import { SignupDto } from './dto/signup.dto'; // or name it RegisterDto
+import { RegisterDto } from './dto/register.dto'; // or name it RegisterDto
 import { LoginDto } from './dto/login.dto';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async register(signupDto: SignupDto) {
+  async register(signupDto: RegisterDto) {
     const { businessName, ownerName, email, password, domain } = signupDto;
 
     // ✅ 1. Create Tenant

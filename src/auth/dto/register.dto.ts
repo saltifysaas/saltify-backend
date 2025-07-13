@@ -1,6 +1,6 @@
 import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
 
-export class SignupDto {
+export class RegisterDto {
   @IsNotEmpty({ message: 'Business name is required' })
   businessName!: string;
 

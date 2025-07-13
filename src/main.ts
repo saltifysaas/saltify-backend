@@ -23,14 +23,22 @@ async function bootstrap() {
 
   // ✅ Enable CORS for your frontend
  app.enableCors({
-  origin: [
+ origin: (origin, callback) => {
+  const allowedOrigins = [
     'http://localhost:3000',
     'https://saltify-frontend.vercel.app',
     'https://saltify-frontend-git-main-yuvraj-chaubeys-projects.vercel.app',
     'https://prod.saltifysaas.com',
-    'https://app.saltifysaas.com'
-  ],
-  credentials: true,
+    'https://app.saltifysaas.com',
+  ];
+  if (!origin || allowedOrigins.includes(origin)) {
+    callback(null, true);
+  } else {
+    callback(new Error(`CORS blocked for origin: ${origin}`));
+  }
+},
+credentials: true,
+
   });
 
   const port = process.env.PORT || 4000;
