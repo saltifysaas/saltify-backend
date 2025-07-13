@@ -22,9 +22,15 @@ async function bootstrap() {
   );
 
   // ✅ Enable CORS for your frontend
-  app.enableCors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-    credentials: true,
+ app.enableCors({
+  origin: [
+    'http://localhost:3000',
+    'https://saltify-frontend.vercel.app',
+    'https://saltify-frontend-git-main-yuvraj-chaubeys-projects.vercel.app',
+    'https://prod.saltifysaas.com',
+    'https://app.saltifysaas.com'
+  ],
+  credentials: true,
   });
 
   const port = process.env.PORT || 4000;
