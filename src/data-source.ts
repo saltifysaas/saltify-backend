@@ -14,7 +14,7 @@ export const AppDataSource = new DataSource({
   type: 'postgres',
   url: process.env.DATABASE_URL,
   entities: [Tenant, User],
-  migrations: [join(__dirname, '/migrations/*.{ts,js}')],
+  migrations: [join(__dirname, 'src/migrations/*.{ts,js}')],
   synchronize: false,
   ssl: {
     rejectUnauthorized: false,

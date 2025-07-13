@@ -16,12 +16,6 @@ export class Tenant {
   email?: string;
 
   @Column({ nullable: true })
-description?: string;
-
-  @Column({ nullable: true })
-notes?: string; // ✅ this is new and unique
-
-  @Column({ nullable: true })
   phone?: string;
 
   @CreateDateColumn()
