@@ -21,24 +21,36 @@ async function bootstrap() {
     }),
   );
 
-  // ✅ Enable CORS for your frontend
- app.enableCors({
- origin: (origin, callback) => {
-  const allowedOrigins = [
-    'http://localhost:3000',
-    'https://saltify-frontend.vercel.app',
-    'https://saltify-frontend-git-main-yuvraj-chaubeys-projects.vercel.app',
-    'https://prod.saltifysaas.com',
-    'https://app.saltifysaas.com',
-  ];
-  if (!origin || allowedOrigins.includes(origin)) {
-    callback(null, true);
-  } else {
-    callback(new Error(`CORS blocked for origin: ${origin}`));
-  }
-},
-credentials: true,
+  // ✅ Enable CORS for your frontend (with wildcard subdomains)
+  app.enableCors({
+    origin: (origin, callback) => {
+      const allowedOrigins = [
+        'http://localhost:3000',
+        'https://saltify-frontend.vercel.app',
+        'https://saltify-frontend-git-main-yuvraj-chaubeys-projects.vercel.app',
+        'https://prod.saltifysaas.com',
+        'https://app.saltifysaas.com',
+      ];
 
+      const allowedPatterns = [
+        /\.localhost:3000$/, // ✅ Allow *.localhost:3000 subdomains
+      ];
+
+      if (!origin) {
+        callback(null, true);
+        return;
+      }
+
+      if (
+        allowedOrigins.includes(origin) ||
+        allowedPatterns.some((pattern) => pattern.test(origin))
+      ) {
+        callback(null, true);
+      } else {
+        callback(new Error(`CORS blocked for origin: ${origin}`));
+      }
+    },
+    credentials: true,
   });
 
   const port = process.env.PORT || 4000;
