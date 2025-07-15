@@ -27,7 +27,7 @@ export class AppController {
         status: 'ok',
         db: 'connected',
       };
-    } catch (error) {
+    } catch (error : any) {
       return {
         status: 'error',
         db: 'not connected',
