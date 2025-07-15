@@ -7,15 +7,16 @@ import { TenantModule } from './tenant/tenant.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+
 @Module({
   imports: [
-    // ✅ Load .env.<env> dynamically (e.g., .env.production)
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: join(__dirname, '..', `.env.${process.env.NODE_ENV || 'staging'}`),
     }),
 
-    // ✅ TypeORM Supabase config
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
@@ -28,11 +29,11 @@ import { AuthModule } from './auth/auth.module';
           ssl: {
             rejectUnauthorized: false,
           },
-          connectionTimeoutMillis: 5000, // ✅ Helps prevent hanging
+          connectionTimeoutMillis: 5000,
         },
         autoLoadEntities: true,
-        synchronize: false, // ✅ NEVER true in production
-        migrationsRun: true, // ✅ Auto-run migrations on startup
+        synchronize: false,
+        migrationsRun: true,
         migrations: [join(__dirname, 'migrations', '*{.ts,.js}')],
       }),
     }),
@@ -41,5 +42,7 @@ import { AuthModule } from './auth/auth.module';
     UserModule,
     AuthModule,
   ],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
