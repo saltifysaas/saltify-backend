@@ -1,14 +1,14 @@
 import { Controller, Post, Get, Body, Param } from '@nestjs/common';
 import { UserService } from './user.service';
-import { User } from './user.entity';
+import { CreateUserDto } from './dto/create-user.dto'; // ✅ Use the DTO
 
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  create(@Body() data: Partial<User>) {
-    return this.userService.createUser(data); // ✅ FIXED
+  create(@Body() data: CreateUserDto) { // ✅ Expect the DTO
+    return this.userService.createUser(data);
   }
 
   @Get()
