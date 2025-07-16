@@ -1,18 +1,18 @@
-import 'reflect-metadata'; // ✅ Required for decorators & TypeORM
+import 'reflect-metadata';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 import { join } from 'path';
 
-// ✅ Load correct .env file based on NODE_ENV (default: staging)
+// Load correct .env file
 const envFile = `.env.${process.env.NODE_ENV || 'staging'}`;
 dotenv.config({ path: join(__dirname, '..', envFile) });
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // ✅ Global validation for DTOs & decorators
+  // Global validation
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -21,7 +21,7 @@ async function bootstrap() {
     }),
   );
 
-  // ✅ Enable CORS for your frontend (production + staging + local)
+  // CORS setup
   app.enableCors({
     origin: (origin, callback) => {
       const allowedOrigins = [
@@ -33,14 +33,9 @@ async function bootstrap() {
         'https://app.saltifysaas.com',
       ];
 
-      const allowedPatterns = [
-        /\.localhost:3000$/, // ✅ Allow *.localhost:3000 subdomains
-      ];
+      const allowedPatterns = [/\.localhost:3000$/];
 
-      if (!origin) {
-        callback(null, true);
-        return;
-      }
+      if (!origin) return callback(null, true);
 
       if (
         allowedOrigins.includes(origin) ||
@@ -57,9 +52,7 @@ async function bootstrap() {
   const port = process.env.PORT || 4000;
   await app.listen(port);
 
-  console.log(
-    `✅ App is listening on http://localhost:${port} using ${envFile}`,
-  );
+  console.log(`✅ App is listening on http://localhost:${port} using ${envFile}`);
 }
 
 bootstrap();
