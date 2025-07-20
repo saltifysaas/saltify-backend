@@ -23,7 +23,10 @@ async function bootstrap() {
 
   // CORS setup
   app.enableCors({
-    origin: (origin, callback) => {
+    origin: (
+      origin: string | undefined,
+      callback: (err: Error | null, allow?: boolean) => void
+    ) => {
       const allowedOrigins = [
         'http://localhost:3000',
         'https://saltify-frontend.vercel.app',
@@ -31,6 +34,7 @@ async function bootstrap() {
         'https://saltify-frontend-git-staging-yuvraj-chaubeys-projects.vercel.app',
         'https://prod.saltifysaas.com',
         'https://app.saltifysaas.com',
+        'https://staging.saltifysaas.com',
       ];
 
       const allowedPatterns = [/\.localhost:3000$/];
