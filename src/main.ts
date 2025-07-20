@@ -56,6 +56,8 @@ async function bootstrap() {
   await app.listen(port);
 
   console.log(`✅ App is listening on http://localhost:${port} using ${envFile}`);
+  console.log('Frontend URL:', process.env.FRONTEND_URL);
+
 }
 
 bootstrap();
