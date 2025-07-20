@@ -30,7 +30,7 @@ async function bootstrap() {
         'https://saltify-frontend-git-main-yuvraj-chaubeys-projects.vercel.app',
         'https://saltify-frontend-git-staging-yuvraj-chaubeys-projects.vercel.app',
         'https://prod.saltifysaas.com',
-        'https://app.saltifysaas.com',
+        'https://pi.saltifysaas.com',
       ];
 
       const allowedPatterns = [/\.localhost:3000$/];
