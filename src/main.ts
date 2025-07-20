@@ -21,9 +21,9 @@ async function bootstrap() {
     }),
   );
 
-  // CORS setup
+  // CORS setup with proper typing
   app.enableCors({
-    origin: (origin, callback) => {
+    origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
       const allowedOrigins = [
         'http://localhost:3000',
         'https://saltify-frontend.vercel.app',
@@ -35,7 +35,9 @@ async function bootstrap() {
 
       const allowedPatterns = [/\.localhost:3000$/];
 
-      if (!origin) return callback(null, true);
+      if (!origin) {
+        return callback(null, true); // Allow non-browser requests (e.g. Postman)
+      }
 
       if (
         allowedOrigins.includes(origin) ||
