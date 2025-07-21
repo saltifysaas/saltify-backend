@@ -13,6 +13,9 @@ export class RegisterDto {
   @IsNotEmpty({ message: 'Domain is required' })
   domain!: string;
 
+    @IsNotEmpty({ message: 'mobile is required' })
+  mobile!: string;
+
   @IsNotEmpty({ message: 'Password is required' })
   @MinLength(6, { message: 'Password must be at least 6 characters long' })
   password!: string;
