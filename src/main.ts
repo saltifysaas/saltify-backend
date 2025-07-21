@@ -39,7 +39,7 @@ async function bootstrap() {
       const allowedPatterns = [/\.localhost:3000$/];
 
       if (!origin) {
-        callback(null, true); // Allow non-browser requests (curl/Postman)
+        callback(null, true); // Allow non-browser requests
       } else if (
         allowedOrigins.includes(origin) ||
         allowedPatterns.some((pattern) => pattern.test(origin))
@@ -50,6 +50,8 @@ async function bootstrap() {
       }
     },
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   });
 
   const port = process.env.PORT || 4000;
