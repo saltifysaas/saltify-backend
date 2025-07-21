@@ -32,7 +32,8 @@ async function bootstrap() {
         'https://prod.saltifysaas.com',
         'https://pi.saltifysaas.com',
         'https://pi.demo.saltifysaas.com',
-        'https://staging.saltifysaas.com', // Added per console CORS trace
+        'https://staging.saltifysaas.com',
+        'https://app.saltifysaas.com',
       ];
 
       const allowedPatterns = [/\.localhost:3000$/];
