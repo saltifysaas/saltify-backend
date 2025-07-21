@@ -5,14 +5,14 @@ import { ValidationPipe } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 import { join } from 'path';
 
-// Load correct .env file
+// Load correct .env file based on NODE_ENV
 const envFile = `.env.${process.env.NODE_ENV || 'staging'}`;
 dotenv.config({ path: join(__dirname, '..', envFile) });
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Global validation
+  // Enable global validation
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -21,7 +21,7 @@ async function bootstrap() {
     }),
   );
 
-  // CORS setup with proper typing
+  // Enable CORS with strict origin checks
   app.enableCors({
     origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
       const allowedOrigins = [
@@ -32,15 +32,14 @@ async function bootstrap() {
         'https://prod.saltifysaas.com',
         'https://pi.saltifysaas.com',
         'https://pi.demo.saltifysaas.com',
+        'https://staging.saltifysaas.com', // Added per console CORS trace
       ];
 
       const allowedPatterns = [/\.localhost:3000$/];
 
       if (!origin) {
-        return callback(null, true); // Allow non-browser requests (e.g. Postman)
-      }
-
-      if (
+        callback(null, true); // Allow non-browser requests (curl/Postman)
+      } else if (
         allowedOrigins.includes(origin) ||
         allowedPatterns.some((pattern) => pattern.test(origin))
       ) {
@@ -57,7 +56,6 @@ async function bootstrap() {
 
   console.log(`✅ App is listening on http://localhost:${port} using ${envFile}`);
   console.log('Frontend URL:', process.env.FRONTEND_URL);
-
 }
 
 bootstrap();
