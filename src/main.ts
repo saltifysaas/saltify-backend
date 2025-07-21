@@ -24,6 +24,7 @@ async function bootstrap() {
   // Enable CORS with strict origin checks
   app.enableCors({
     origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+
       const allowedOrigins = [
         'http://localhost:3000',
         'https://saltify-frontend.vercel.app',
@@ -34,6 +35,7 @@ async function bootstrap() {
         'https://pi.demo.saltifysaas.com',
         'https://staging.saltifysaas.com',
         'https://app.saltifysaas.com',
+        'https://staging.saltifysaas.com',
       ];
 
       const allowedPatterns = [/\.localhost:3000$/];
